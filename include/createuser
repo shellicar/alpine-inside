@@ -3,7 +3,7 @@
 if [ "${MYUSER}" != "" ]; then
     echo "Creating user: ${MYUSER}"
     addgroup ${MYUSER} && \
-    adduser ${MYUSER} -s /bin/bash -D -G ${MYUSER} && \
+    adduser ${MYUSER} -s ${MYUSER_SHELL:-/bin/bash} -D -G ${MYUSER} && \
     echo "${MYUSER}:" | chpasswd && \
     addgroup ${MYUSER} wheel
 else
