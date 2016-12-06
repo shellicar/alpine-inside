@@ -1,0 +1,11 @@
+#!/bin/sh
+. env
+
+TMPFILE=.Dockerfile
+
+cat docker.d/* > ${TMPFILE}
+
+if ! diff -q Dockerfile ${TMPFILE}; then
+	cp ${TMPFILE} Dockerfile
+fi
+docker build . -t ${TAG}
