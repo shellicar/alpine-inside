@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv sh
+
+if [ "${MYUSER}" != "" ]; then
+    echo "Creating user: ${MYUSER}"
+    addgroup ${MYUSER} && \
+    adduser ${MYUSER} -s /bin/bash -D -G ${MYUSER} && \
+    echo "${MYUSER}:" | chpasswd && \
+    addgroup ${MYUSER} wheel
+else
+    echo "\$MYUSER not set, skipping createuser"
+fi
+
