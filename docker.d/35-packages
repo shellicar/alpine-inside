@@ -1,0 +1,4 @@
+RUN apk add --no-cache git bash vim sudo
+
+COPY ./include/sudoers /etc/sudoers
+

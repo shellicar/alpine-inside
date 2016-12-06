@@ -1,0 +1,6 @@
+RUN apk add --no-cache openssh \
+&&  ssh-keygen -A
+
+COPY ./include/sshd_config /etc/ssh/sshd_config
+COPY ./include/run_sshd /etc/services.d/sshd/run
+

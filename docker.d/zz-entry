@@ -1,4 +1,5 @@
 
 ENTRYPOINT ["/init"]
-CMD ["dockerd-entrypoint.sh"]
+#CMD ["dockerd-entrypoint.sh"]
+CMD []
 

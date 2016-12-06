@@ -1,0 +1,8 @@
+
+ENV MYUSER stephen
+
+RUN addgroup ${MYUSER} \
+&&  adduser ${MYUSER} -s /bin/bash -D -G ${MYUSER} \
+&&  echo "${MYUSER}:" | chpasswd \
+&&  addgroup ${MYUSER} wheel
+

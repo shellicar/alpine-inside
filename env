@@ -1,2 +1,3 @@
 TAG=shellicar/alpine-inside
 NAME=alpine-inside
+USER=stephen

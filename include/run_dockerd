@@ -1,0 +1,7 @@
+#!/bin/sh
+
+#/usr/bin/execlineb -P
+
+PATH=${PATH}:/usr/local/bin
+/usr/local/bin/dockerd-entrypoint.sh
+

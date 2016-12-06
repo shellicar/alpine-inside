@@ -23,7 +23,6 @@ run(){
     -v inside-var-lib:/var/lib \
     -v inside-var-lib-docker:/var/lib/docker \
 	-v inside-home:/home \
-	-v inside-etc:/etc \
 	${TAG}
 }
 

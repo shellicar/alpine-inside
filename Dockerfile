@@ -22,11 +22,32 @@ RUN curl -Lo /etc/apk/keys/sgerrand.rsa.pub https://raw.githubusercontent.com/sg
 RUN apk add tzdata --no-cache \
 &&  cp /usr/share/zoneinfo/Australia/Melbourne /etc/localtime \
 &&  apk del -r tzdata
-RUN apk add --no-cache git bash vim openssh sudo
+RUN apk add --no-cache git bash vim sudo
+
+COPY ./include/sudoers /etc/sudoers
+
+RUN apk add --no-cache openssh \
+&&  ssh-keygen -A
+
+COPY ./include/sshd_config /etc/ssh/sshd_config
+COPY ./include/run_sshd /etc/services.d/sshd/run
+
+
+COPY ./include/run_dockerd /etc/services.d/dockerd/run
+
+
+ENV MYUSER stephen
+
+RUN addgroup ${MYUSER} \
+&&  adduser ${MYUSER} -s /bin/bash -D -G ${MYUSER} \
+&&  echo "${MYUSER}:" | chpasswd \
+&&  addgroup ${MYUSER} wheel
+
 RUN apk del -r curl openssl \
 &&  rm -rf /tmp/* \
 &&  rm -rf /var/cache/apk/*
 
 ENTRYPOINT ["/init"]
-CMD ["dockerd-entrypoint.sh"]
+#CMD ["dockerd-entrypoint.sh"]
+CMD []
 
