@@ -1,5 +1,4 @@
-
+# s6-overlay init
 ENTRYPOINT ["/init"]
-#CMD ["dockerd-entrypoint.sh"]
 CMD []
 

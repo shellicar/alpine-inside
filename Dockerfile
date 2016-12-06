@@ -38,18 +38,19 @@ RUN apk add --no-cache openssh \
 COPY ./include/sshd_config /etc/ssh/sshd_config
 COPY ./include/run_sshd /etc/services.d/sshd/run
 
-
+# docker service
 COPY ./include/run_dockerd /etc/services.d/dockerd/run
 
 # custom user (-e MYUSER)
 COPY include/createuser /etc/cont-init.d/
 RUN chmod +x /etc/cont-init.d/createuser
 
+# cleanup
 RUN apk del -r curl openssl \
 &&  rm -rf /tmp/* \
 &&  rm -rf /var/cache/apk/*
 
+# s6-overlay init
 ENTRYPOINT ["/init"]
-#CMD ["dockerd-entrypoint.sh"]
 CMD []
 
