@@ -25,4 +25,8 @@ RUN apk add tzdata --no-cache \
 RUN apk add --no-cache git bash vim openssh sudo
 RUN apk del -r curl openssl \
 &&  rm -rf /tmp/* \
-&&  rm -rf /var/cache/apk/* \
+&&  rm -rf /var/cache/apk/*
+
+ENTRYPOINT ["/init"]
+CMD ["dockerd-entrypoint.sh"]
+

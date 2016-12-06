@@ -1,0 +1,4 @@
+
+ENTRYPOINT ["/init"]
+CMD ["dockerd-entrypoint.sh"]
+
