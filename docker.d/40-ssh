@@ -1,0 +1,5 @@
+# ssh & config
+RUN apk add --no-cache openssh \
+&&  ssh-keygen -A
+
+
