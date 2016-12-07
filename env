@@ -1,2 +1,7 @@
 TAG=shellicar/alpine-inside
 NAME=alpine-inside
+
+MYSSH_USER=stephen
+DOCKER_SUBNET=172.50.0.0/30
+DOCKER_IP=172.50.0.2
+DOCKER_NETWORK=alpine-inside-net

@@ -1,5 +1,43 @@
 #!/bin/sh
 
+makenet(){
+
+    if [ "${DOCKER_NETWORK}" = "" ]; then
+        echo "Network not defined: \$DOCKER_NETWORK"
+        return
+    fi
+
+    result=$(docker network inspect --format '' "${DOCKER_NETWORK}" 2>/dev/null)
+
+    createnetwork(){
+        docker network create -d bridge --subnet "${DOCKER_SUBNET}" "${DOCKER_NETWORK}" || exit 1
+        echo "Created network"
+    }
+
+    if [ "$result" != "[]" ]; then
+
+        if [ "${DOCKER_SUBNET}" = "" ]; then
+            echo "Subnet not defined: \$DOCKER_SUBNET"
+            exit 1
+        fi
+
+        subnet=$(docker network inspect --format "{{(index .IPAM.Config 0).Subnet}}" "${DOCKER_NETWORK}" 2>/dev/null)
+
+
+        if [ "$subnet" != "${DOCKER_SUBNET}" ]; then
+            printf "Recreating network: "
+            docker network rm ${DOCKER_NETWORK} || exit 1
+            createnetwork || exit 2
+        else
+            echo "Network is good"
+        fi
+
+    else
+        printf "No existing network, creating: "
+        createnetwork || exit 3
+    fi    
+}
+
 stop(){
 state=`docker inspect --format {{.State.Running}} "${NAME}" 2>/dev/null`
 	if [ "$state" == "true" ]; then
@@ -14,22 +52,36 @@ state=`docker inspect --format {{.State.Running}} "${NAME}" 2>/dev/null`
 }
 
 run(){
-	printf "Run: " && \
+    printf "Run: "
+    if [ "${DOCKER_IP}" = "" ]; then
+        echo "IP not defined: \$DOCKER_IP"
+        exit 5
+    fi
+
+    if [ "${DOCKER_NETWORK}" = "" ]; then
+        netparam=""
+    else
+        netparam="--net ${DOCKER_NETWORK} --ip ${DOCKER_IP}"
+    fi
+
 	docker run -h ${NAME} \
 	-it \
 	-d \
-	--name ${NAME} \
+    $netparam \
+	--name "${NAME}" \
 	--privileged \
-    -e MYUSER=stephen \
+    -e MYUSER=${MYSSH_USER} \
     -v inside-var-lib:/var/lib \
     -v inside-var-lib-docker:/var/lib/docker \
 	-v inside-home:/home \
-	${TAG}
+    -v inside-root:/root \
+	"${TAG}"
 }
 
 
 . env && \
 ./build && \
 stop && \
+makenet && \
 run
 
