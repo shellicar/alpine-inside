@@ -64,18 +64,22 @@ run(){
         netparam="--net ${DOCKER_NETWORK} --ip ${DOCKER_IP}"
     fi
 
-	docker run -h ${NAME} \
-	-it \
-	-d \
-    $netparam \
-	--name "${NAME}" \
-	--privileged \
-    -e MYUSER=${MYSSH_USER} \
-    -v inside-var-lib:/var/lib \
-    -v inside-var-lib-docker:/var/lib/docker \
-	-v inside-home:/home \
-    -v inside-root:/root \
-	"${TAG}"
+RUN_CMD="docker run -h ${NAME} \
+-it \
+-d \
+${netparam} \
+--name ${NAME} \
+--privileged \
+-e MYUSER=${MYSSH_USER} \
+-v inside-var-lib:/var/lib \
+-v inside-var-lib-docker:/var/lib/docker \
+-v inside-home:/home \
+-v inside-root:/root \
+${CONTAINER_RUN_OPTS} \
+${TAG}"
+
+    echo "$RUN_CMD"
+    eval "${RUN_CMD}"
 }
 
 

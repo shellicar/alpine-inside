@@ -5,6 +5,7 @@ RUN apk add tzdata --no-cache \
 &&  cp /usr/share/zoneinfo/Australia/Melbourne /etc/localtime \
 &&  apk del -r tzdata
 
+RUN addgroup docker -S
 # s6-overlay
 ENV S6_VERSION v1.18.1.5
 ENV S6_URL https://github.com/just-containers/s6-overlay/releases/download/${S6_VERSION}/s6-overlay-amd64.tar.gz
@@ -51,6 +52,7 @@ COPY ./include/sudoers /etc/sudoers
 COPY ./include/sshd_config /etc/ssh/sshd_config
 COPY ./include/run_sshd /etc/services.d/sshd/run
 
+EXPOSE 22
 # s6-overlay init
 ENTRYPOINT ["/init"]
 CMD []

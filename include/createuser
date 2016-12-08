@@ -4,6 +4,7 @@ if [ "${MYUSER}" != "" ]; then
     echo "Creating user: ${MYUSER}"
     addgroup ${MYUSER} && \
     adduser ${MYUSER} -s ${MYUSER_SHELL:-/bin/bash} -D -G ${MYUSER} && \
+    addgroup ${MYUSER} docker && \
     echo "${MYUSER}:" | chpasswd && \
     addgroup ${MYUSER} wheel
 else
