@@ -5,6 +5,6 @@ NAME=alpine-inside
 
 MYSSH_USER=stephen
 DOCKER_SUBNET=172.50.0.0/30
-DOCKER_IP=172.50.0.2
+#DOCKER_IP=172.50.0.2
 DOCKER_NETWORK=alpine-inside-net
-CONTAINER_RUN_OPTS="--restart=unless-stopped -p 222:2"
+CONTAINER_RUN_OPTS="--restart=unless-stopped -p 222:22"

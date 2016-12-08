@@ -52,14 +52,15 @@ state=`docker inspect --format {{.State.Running}} "${NAME}" 2>/dev/null`
 }
 
 run(){
-    printf "Run: "
-    if [ "${DOCKER_IP}" = "" ]; then
-        echo "IP not defined: \$DOCKER_IP"
-        exit 5
-    fi
+    #if [ "${DOCKER_IP}" = "" ]; then
+    #    echo "IP not defined: \$DOCKER_IP"
+    #    exit 5
+    #fi
 
     if [ "${DOCKER_NETWORK}" = "" ]; then
         netparam=""
+    elif [ "${DOCKER_IP}" = "" ]; then
+        netparam="--net ${DOCKER_NETWORK}"
     else
         netparam="--net ${DOCKER_NETWORK} --ip ${DOCKER_IP}"
     fi
@@ -78,7 +79,8 @@ ${netparam} \
 ${CONTAINER_RUN_OPTS} \
 ${TAG}"
 
-    echo "$RUN_CMD"
+    echo "Command: $RUN_CMD"
+    printf "Run: "
     eval "${RUN_CMD}"
 }
 
